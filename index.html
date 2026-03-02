@@ -2,234 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pallankuzhi V4.1 - Animated Seeds</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pallankuzhi Ultimate - Rai !nformatics</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
-        /* === ULTRA MODERN THEME VARIABLES === */
+        /* === THEME VARIABLES === */
         :root {
-            --bg: #120d0a;
-            --bg-gradient: radial-gradient(circle at top, #2a1c15 0%, #120d0a 100%);
-            --board-bg: linear-gradient(145deg, #42281e, #2b1a13);
-            --board-border: #1a0f0b;
+            /* Premium Walnut (Default Board) */
+            --bg: #120d0a; --bg-gradient: radial-gradient(circle at top, #2a1c15 0%, #120d0a 100%);
+            --board-bg: linear-gradient(145deg, #42281e, #2b1a13); --board-border: #1a0f0b;
             --pit-bg: linear-gradient(145deg, #1c100b, #25160f);
             --pit-shadow: inset 8px 8px 15px #0b0604, inset -8px -8px 15px #352018;
-            --accent: #e5a93c;
-            --accent-glow: rgba(229, 169, 60, 0.4);
-            --text-main: #f5e6d3;
-            --text-muted: #a38c78;
-            --seed-color1: #a86c32;
-            --seed-color2: #4a2810;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --accent: #e5a93c; --accent-glow: rgba(229, 169, 60, 0.4);
+            --text-main: #f5e6d3; --text-muted: #a38c78;
+            --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.05);
             --panel-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            
+            /* Default Seed Theme (Tamarind) */
+            --seed-color1: #a86c32; --seed-color2: #4a2810;
         }
 
         body.theme-marble {
-            --bg: #f4f7f6;
-            --bg-gradient: radial-gradient(circle at top, #ffffff 0%, #eef2f3 100%);
-            --board-bg: linear-gradient(145deg, #ffffff, #e6e9e9);
-            --board-border: #d1d9e6;
+            --bg: #f4f7f6; --bg-gradient: radial-gradient(circle at top, #ffffff 0%, #eef2f3 100%);
+            --board-bg: linear-gradient(145deg, #ffffff, #e6e9e9); --board-border: #d1d9e6;
             --pit-bg: linear-gradient(145deg, #e6e9e9, #ffffff);
             --pit-shadow: inset 8px 8px 15px #d1d9e6, inset -8px -8px 15px #ffffff;
-            --accent: #4a90e2;
-            --accent-glow: rgba(74, 144, 226, 0.3);
-            --text-main: #2c3e50;
-            --text-muted: #7f8c8d;
-            --seed-color1: #34495e;
-            --seed-color2: #1abc9c;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 1);
-            --panel-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);
+            --accent: #4a90e2; --accent-glow: rgba(74, 144, 226, 0.3);
+            --text-main: #2c3e50; --text-muted: #7f8c8d;
+            --glass-bg: rgba(255, 255, 255, 0.7); --glass-border: rgba(255, 255, 255, 1);
         }
 
         body.theme-cyber {
-            --bg: #09090b;
-            --bg-gradient: radial-gradient(circle at top, #18181b 0%, #09090b 100%);
-            --board-bg: #131316;
-            --board-border: #27272a;
-            --pit-bg: #09090b;
-            --pit-shadow: inset 5px 5px 10px #000000, inset -5px -5px 10px #1f1f22;
-            --accent: #00f0ff;
-            --accent-glow: rgba(0, 240, 255, 0.4);
-            --text-main: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --seed-color1: #ff0055;
-            --seed-color2: #7000ff;
-            --glass-bg: rgba(24, 24, 27, 0.8);
-            --glass-border: rgba(39, 39, 42, 1);
-            --panel-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.1);
+            --bg: #09090b; --bg-gradient: radial-gradient(circle at top, #18181b 0%, #09090b 100%);
+            --board-bg: #131316; --board-border: #27272a;
+            --pit-bg: #09090b; --pit-shadow: inset 5px 5px 10px #000000, inset -5px -5px 10px #1f1f22;
+            --accent: #00f0ff; --accent-glow: rgba(0, 240, 255, 0.4);
+            --text-main: #e4e4e7; --text-muted: #a1a1aa;
+            --glass-bg: rgba(24, 24, 27, 0.8); --glass-border: rgba(39, 39, 42, 1);
         }
 
+        /* Seed Themes */
+        body[data-seed="gold"] { --seed-color1: #ffea00; --seed-color2: #ff9100; }
+        body[data-seed="sapphire"] { --seed-color1: #00e5ff; --seed-color2: #0055ff; }
+
+        /* === GLOBAL STYLES === */
         * { box-sizing: border-box; }
-        
         body {
             background: var(--bg-gradient); color: var(--text-main); font-family: 'Inter', sans-serif;
-            display: flex; flex-direction: column; align-items: center; margin: 0; padding: 30px 20px;
+            display: flex; flex-direction: column; align-items: center; margin: 0; padding: 20px 10px;
             min-height: 100vh; overflow-x: hidden; transition: background 0.6s ease, color 0.6s ease;
+            touch-action: manipulation; user-select: none;
         }
 
-        .header-container { text-align: center; margin-bottom: 30px; }
+        /* === BRANDING & TOP BAR === */
+        .header-container { text-align: center; margin-bottom: 20px; }
         .header-container h1 { 
-            margin: 0; font-size: 2.8rem; font-weight: 800; letter-spacing: 2px;
-            background: linear-gradient(135deg, var(--text-main), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 0; font-size: 2.5rem; font-weight: 800; 
+            background: linear-gradient(135deg, var(--text-main), var(--accent)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
         }
-        .header-container p { margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;}
+        .header-container p { margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
 
         .top-bar {
-            display: flex; justify-content: center; gap: 25px; flex-wrap: wrap;
-            background: var(--glass-bg); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 50px;
-            padding: 12px 30px; margin-bottom: 25px; box-shadow: var(--panel-shadow);
-            font-weight: 600; font-size: 1rem;
+            display: flex; justify-content: center; align-items: center; gap: 15px; flex-wrap: wrap;
+            background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border);
+            border-radius: 50px; padding: 10px 20px; margin-bottom: 20px; font-weight: 600; font-size: 0.9rem; box-shadow: var(--panel-shadow);
         }
-        .coin-highlight { color: var(--accent); display: flex; align-items: center; gap: 5px; }
+        .coin-highlight { color: var(--accent); display: flex; align-items: center; gap: 5px; font-size: 1rem; }
+        
+        button.rule-btn {
+            background: transparent; color: var(--accent); border: 1px solid var(--accent);
+            padding: 4px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        button.rule-btn:hover { background: var(--accent); color: #000; }
 
-        .info-row { display: flex; gap: 20px; width: 100%; max-width: 900px; margin-bottom: 30px; align-items: stretch; }
-
+        /* === INFO PANELS === */
+        .info-row { display: flex; gap: 15px; width: 100%; max-width: 900px; margin-bottom: 25px; flex-direction: row; }
         .status-box {
-            flex: 2; background: var(--glass-bg); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 20px; display: flex; flex-direction: column; justify-content: center;
-            box-shadow: var(--panel-shadow); position: relative; overflow: hidden;
+            flex: 2; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 15px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; text-align: center;
         }
-        .status-box::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent); }
-        #msg-box { font-size: 1.2rem; font-weight: 600; text-align: center; }
-
+        .status-box::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: var(--accent); }
+        #msg-box { font-size: 1.1rem; font-weight: 600; }
+        
         .log-box {
-            flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border);
-            border-radius: 20px; padding: 15px; height: 100px; overflow-y: auto;
-            font-size: 0.85rem; color: var(--text-muted); box-shadow: var(--panel-shadow); display: flex; flex-direction: column-reverse;
+            flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 10px; height: 80px; overflow-y: auto; font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column-reverse;
         }
-        .log-box div { padding: 4px 0; border-bottom: 1px solid var(--glass-border); }
-        .log-box div:first-child { color: var(--text-main); font-weight: 600; border-bottom: none; }
+        .log-box div { padding: 3px 0; border-bottom: 1px solid var(--glass-border); }
+        .log-box div:first-child { color: var(--text-main); font-weight: 600; }
 
+        /* === HAND TRACKER === */
+        .hand-tracker-wrapper { display: flex; justify-content: center; width: 100%; margin-top: -15px; margin-bottom: 15px;}
+        #hand-tracker {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 8px 25px;
+            border-radius: 50px; font-size: 1rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 10px; transition: all 0.3s;
+        }
+        #hand-tracker.active { background: var(--accent-glow); border-color: var(--accent); color: var(--text-main); transform: translateY(-5px); }
+        #hand-count { font-size: 1.3rem; font-weight: 800; }
+
+        /* === THE BOARD (RESPONSIVE & OPTIMIZED SIZES) === */
         .board-container {
-            background: var(--board-bg); padding: 50px 40px; border-radius: 100px;
-            border: 4px solid var(--board-border); box-shadow: var(--panel-shadow);
-            display: flex; flex-direction: column; gap: 50px; transition: transform 0.6s ease;
+            background: var(--board-bg); padding: 40px 20px; border-radius: 70px; border: 4px solid var(--board-border);
+            box-shadow: var(--panel-shadow); display: flex; flex-direction: column; gap: 40px; transition: transform 0.6s ease; width: 100%; max-width: 900px;
         }
-
-        .row { display: flex; gap: 25px; transition: opacity 0.4s ease; }
-        .row.inactive { opacity: 0.3; filter: grayscale(50%); } 
-
+        .row { display: flex; gap: 15px; justify-content: center; transition: opacity 0.4s ease; }
+        .row.inactive { opacity: 0.4; filter: grayscale(40%); } 
         .face-to-face #row-p2 { transform: rotate(180deg); }
         .face-to-face #row-p2 .pit-count { transform: rotate(180deg); }
 
         .pit {
-            width: 85px; height: 85px; background: var(--pit-bg); border-radius: 50%;
-            display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
-            position: relative; box-shadow: var(--pit-shadow); cursor: pointer; transition: all 0.3s ease;
+            width: 95px; height: 95px; /* Increased Base Size */
+            background: var(--pit-bg); border-radius: 50%;
+            display: flex; flex-wrap: wrap; align-content: center; justify-content: center; position: relative; box-shadow: var(--pit-shadow); cursor: pointer;
         }
-        .pit:hover { transform: translateY(-3px); box-shadow: var(--pit-shadow), 0 10px 20px rgba(0,0,0,0.2); }
-        .pit.target { box-shadow: var(--pit-shadow), 0 0 0 3px var(--accent); opacity: 1 !important; animation: breathe 2s infinite ease-in-out; z-index: 10; }
-        .pit.highlight { box-shadow: var(--pit-shadow), 0 0 25px var(--accent-glow); }
-        
-        @keyframes breathe { 0%, 100% { box-shadow: var(--pit-shadow), 0 0 5px var(--accent); } 50% { box-shadow: var(--pit-shadow), 0 0 20px var(--accent); transform: scale(1.05); } }
+        .pit.target { box-shadow: var(--pit-shadow), 0 0 0 3px var(--accent); opacity: 1 !important; animation: breathe 1.5s infinite; z-index: 10; }
+        .pit.highlight { box-shadow: var(--pit-shadow), 0 0 20px var(--accent-glow); }
+        @keyframes breathe { 0%, 100% { box-shadow: var(--pit-shadow), 0 0 5px var(--accent); } 50% { box-shadow: var(--pit-shadow), 0 0 15px var(--accent); transform: scale(1.05); } }
 
-        /* === BUG FIX: PERFECT SEED ANIMATION === */
         .seed {
-            width: 13px; height: 18px; 
-            background: linear-gradient(135deg, var(--seed-color1), var(--seed-color2));
-            border-radius: 50% 40% 60% 40%; margin: 1.5px; 
-            box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-            /* JS ab direct transform ki jagah variables use karega taki animation override na ho */
-            transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
-            animation: growPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            width: 12px; height: 16px; background: linear-gradient(135deg, var(--seed-color1), var(--seed-color2));
+            border-radius: 50% 40% 60% 40%; margin: 1px; box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); 
+            animation: growPop 0.3s forwards;
         }
         @keyframes growPop { 
-            0% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0) translateY(-20px); opacity: 0; } 
-            60% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.4); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1) translateY(0); opacity: 1; } 
+            0% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0); opacity: 0; } 
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1); opacity: 1; } 
         }
 
-        .pit-count { 
-            position: absolute; bottom: -35px; font-size: 0.9rem; font-weight: 600; 
-            color: var(--text-muted); background: var(--glass-bg); padding: 4px 12px; 
-            border-radius: 20px; border: 1px solid var(--glass-border);
-        }
+        .pit-count { position: absolute; bottom: -28px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: var(--glass-bg); padding: 2px 10px; border-radius: 15px; border: 1px solid var(--glass-border); }
 
-        .hand-tracker-wrapper { display: flex; justify-content: center; width: 100%; margin-top: -20px; margin-bottom: 20px;}
-        #hand-tracker {
-            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 12px 30px;
-            border-radius: 50px; font-size: 1.1rem; color: var(--text-muted); font-weight: 600;
-            display: flex; align-items: center; gap: 10px; transition: all 0.3s;
-        }
-        #hand-tracker.active { 
-            background: var(--accent-glow); border-color: var(--accent); color: var(--text-main); 
-            transform: translateY(-5px); box-shadow: 0 10px 20px var(--accent-glow);
-        }
-        #hand-count { font-size: 1.5rem; font-weight: 800; }
-
+        /* === CONTROL PANEL === */
         .controls-panel {
-            margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
-            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-            padding: 35px; border-radius: 30px; width: 100%; max-width: 900px; box-shadow: var(--panel-shadow);
+            margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 25px; border-radius: 25px; width: 100%; max-width: 900px;
         }
+        .score-board { display: flex; gap: 15px; }
+        .score-card { flex: 1; text-align: center; background: rgba(0,0,0,0.1); padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); }
+        .score-card h3 { margin: 0 0 5px 0; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;}
+        .score-card b { font-size: 2rem; color: var(--accent); }
 
-        .score-board { display: flex; gap: 20px; justify-content: space-between; }
-        .score-card { flex: 1; text-align: center; background: rgba(0,0,0,0.05); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); }
-        .score-card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
-        .score-card b { font-size: 2.5rem; color: var(--accent); line-height: 1; }
-
-        .settings-group { display: flex; flex-direction: column; gap: 15px; }
-        .switch-label { display: flex; justify-content: space-between; align-items: center; font-weight: 600; cursor: pointer; }
-        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .settings-group { display: flex; flex-direction: column; gap: 12px; }
+        .switch-label { display: flex; justify-content: space-between; align-items: center; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(128,128,128,0.3); transition: .4s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-        .actions-group { display: flex; flex-direction: column; gap: 15px; }
-        select, button {
-            padding: 14px 20px; border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif;
-            font-weight: 600; cursor: pointer; transition: all 0.3s ease; appearance: none; outline: none; border: 1px solid var(--glass-border);
-        }
-        select { background: var(--glass-bg); color: var(--text-main); }
+        .actions-group { display: flex; flex-direction: column; gap: 10px; }
+        select, button { padding: 12px; border-radius: 10px; font-size: 0.95rem; font-family: 'Inter', sans-serif; font-weight: 600; cursor: pointer; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main); }
         select option { background: #1a1a1a; color: #fff; }
-        button { background: var(--glass-bg); color: var(--text-main); }
-        button:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
-        button.primary { background: var(--accent); color: #000; border: none; box-shadow: 0 10px 20px var(--accent-glow); }
-        button.primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px var(--accent-glow); }
+        button:hover { background: rgba(255,255,255,0.1); }
+        button.primary { background: var(--accent); color: #000; border: none; font-weight: bold; }
+        
+        /* Modal for How to Play */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; padding: 20px;}
+        .modal-content { background: var(--bg); border: 2px solid var(--accent); padding: 25px; border-radius: 20px; max-width: 500px; color: var(--text-main); }
+        .modal-content h2 { margin-top: 0; color: var(--accent); }
+        .modal-content ul { padding-left: 20px; line-height: 1.6; }
 
-        .particle {
-            position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none;
-            animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 999;
-        }
+        /* PARTICLES */
+        .particle { position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none; animation: explode 0.8s forwards; z-index: 999; }
         @keyframes explode { 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+
+        /* =========================================
+           📱 PERFECT SCALING FOR ALL SCREENS
+           ========================================= */
+        
+        /* Tablets and Large Phones */
+        @media (max-width: 850px) {
+            .header-container h1 { font-size: 2rem; }
+            .top-bar { padding: 10px; font-size: 0.8rem; gap: 10px; }
+            .info-row { flex-direction: column; }
+            .board-container { padding: 30px 10px; gap: 35px; border-radius: 50px; border-width: 3px; }
+            .row { gap: 8px; } 
+            .pit { width: 75px; height: 75px; } /* Massively Increased for Tablet */
+            .seed { width: 10px; height: 14px; }
+            .pit-count { bottom: -24px; font-size: 0.75rem; padding: 2px 8px; }
+            .controls-panel { grid-template-columns: 1fr; }
+        }
+        
+        /* Standard Phones */
+        @media (max-width: 600px) {
+            .board-container { padding: 25px 8px; gap: 30px; border-radius: 40px; }
+            .row { gap: 5px; }
+            .pit { width: 55px; height: 55px; } /* Much larger for modern phones */
+            .seed { width: 9px; height: 12px; }
+            .pit-count { bottom: -22px; font-size: 0.7rem; padding: 2px 6px; }
+        }
+        
+        /* Very Small Phones (e.g. iPhone SE) */
+        @media (max-width: 400px) {
+            .board-container { padding: 15px 5px; gap: 25px; border-radius: 30px;}
+            .row { gap: 3px; }
+            .pit { width: 45px; height: 45px; } /* Maximized to fit without overflow */
+            .seed { width: 7px; height: 10px; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="modal-overlay" id="help-modal">
+        <div class="modal-content">
+            <h2>📜 How to Play Pallankuzhi</h2>
+            <ul>
+                <li><b>Goal:</b> Capture more seeds than your opponent.</li>
+                <li><b>Sowing:</b> Click a pit on your side. Seeds drop one-by-one counter-clockwise.</li>
+                <li><b>Continuing:</b> If the last seed lands next to a pit WITH seeds, pick those up and continue.</li>
+                <li><b>Capturing:</b> If the last seed lands next to an EMPTY pit, capture all seeds from the pit right after it!</li>
+                <li><b>Game Over:</b> When one player has no seeds left on their side.</li>
+            </ul>
+            <button class="primary" onclick="document.getElementById('help-modal').style.display='none'" style="width: 100%">Got it! Let's Play</button>
+        </div>
+    </div>
+
     <div class="header-container">
         <h1>PALLANKUZHI</h1>
-        <p>PREMIUM V4.1 | RAI !NFORMATICS</p>
+        <p>V5.1 MASTER EDITION | RAI !NFORMATICS</p>
     </div>
 
     <div class="top-bar">
-        <span class="coin-highlight">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
-            <span id="stat-coins">0</span>
-        </span>
+        <span class="coin-highlight">🪙 <span id="stat-coins">0</span></span>
         <span>🏆 Wins: <span id="stat-wins">0</span></span>
         <span>💀 Losses: <span id="stat-loss">0</span></span>
+        <button class="rule-btn" onclick="document.getElementById('help-modal').style.display='flex'">📖 Rules</button>
     </div>
 
     <div class="info-row">
-        <div class="status-box">
-            <div id="msg-box">Initializing Game Engine...</div>
-        </div>
+        <div class="status-box"><div id="msg-box">Initializing Game Engine...</div></div>
         <div class="log-box" id="action-log"></div>
     </div>
 
     <div class="hand-tracker-wrapper">
-        <div id="hand-tracker">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0v4"></path><path d="M14 10V5a2 2 0 0 0-4 0v5"></path><path d="M10 10.5V4a2 2 0 0 0-4 0v9"></path><path d="M6 14v-2a2 2 0 0 0-4 0v5.5C2 21.5 5.5 22 8.5 22c3.5 0 6.5-2.5 7.5-6l4-5c.5-.5.5-1.5 0-2s-1.5-.5-2 0l-4 4"></path></svg>
-            Holding <b id="hand-count">0</b>
-        </div>
+        <div id="hand-tracker">✋ Holding <b id="hand-count">0</b></div>
     </div>
 
     <div class="board-container" id="board-ui">
@@ -248,36 +257,34 @@
         </div>
         
         <div class="settings-group">
-            <label class="switch-label">Auto Movement
-                <label class="switch"><input type="checkbox" id="auto-move" checked><span class="slider"></span></label>
-            </label>
-            <label class="switch-label">AI Opponent
-                <label class="switch"><input type="checkbox" id="ai-on"><span class="slider"></span></label>
-            </label>
-            <label class="switch-label">Sound Effects
-                <label class="switch"><input type="checkbox" id="sound-on" checked><span class="slider"></span></label>
-            </label>
-            <label class="switch-label">Tabletop Mode
-                <label class="switch"><input type="checkbox" id="face-mode" onchange="toggleFaceMode()"><span class="slider"></span></label>
-            </label>
+            <label class="switch-label">Auto Movement <label class="switch"><input type="checkbox" id="auto-move" checked><span class="slider"></span></label></label>
+            <label class="switch-label">AI Opponent <label class="switch"><input type="checkbox" id="ai-on"><span class="slider"></span></label></label>
+            <label class="switch-label">Sound Effects <label class="switch"><input type="checkbox" id="sound-on" checked><span class="slider"></span></label></label>
+            <label class="switch-label">🗣️ Voice Announcer <label class="switch"><input type="checkbox" id="voice-on" checked><span class="slider"></span></label></label>
+            <label class="switch-label">Tabletop Mode <label class="switch"><input type="checkbox" id="face-mode" onchange="toggleFaceMode()"><span class="slider"></span></label></label>
         </div>
         
         <div class="actions-group">
-            <select id="theme-selector" onchange="attemptThemeChange()"></select>
+            <select id="theme-selector" onchange="attemptPurchase('board')"></select>
+            <select id="seed-selector" onchange="attemptPurchase('seed')"></select>
             <select id="start-seeds" onchange="confirmReset()">
                 <option value="5">Rule: 5 Seeds per Pit</option>
                 <option value="6">Rule: 6 Seeds per Pit</option>
                 <option value="12">Rule: 12 Seeds per Pit</option>
             </select>
             <button onclick="undoMove()">↩️ Undo Last Move</button>
-            <button onclick="confirmReset()" class="primary">Start New Game</button>
+            <button onclick="confirmReset()" class="primary">🔄 Start New Game</button>
         </div>
     </div>
 
     <script>
-        // ======= AUDIO ENGINE =======
+        // ======= AUDIO & VOICE ENGINE =======
         let audioCtx;
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+        function initAudio() { 
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); 
+            if (audioCtx.state === 'suspended') audioCtx.resume(); 
+        }
+        
         function playDropSound() {
             if (!document.getElementById('sound-on').checked) return; initAudio();
             const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
@@ -285,6 +292,7 @@
             gain.gain.setValueAtTime(0.8, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
             osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
         }
+        
         function playCaptureSound() {
             if (!document.getElementById('sound-on').checked) return; initAudio();
             [523.25, 659.25, 783.99].forEach(freq => { 
@@ -294,11 +302,25 @@
                 osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.6);
             });
         }
+        
+        // Wrapped Voice in Try-Catch so autoplay policy blocking doesn't freeze the game
+        function speakVoice(text) {
+            try {
+                if (!document.getElementById('voice-on').checked) return;
+                if (!('speechSynthesis' in window)) return;
+                window.speechSynthesis.cancel();
+                let msg = new SpeechSynthesisUtterance(text);
+                msg.rate = 1.1; 
+                window.speechSynthesis.speak(msg);
+            } catch (error) {
+                console.warn("Browser blocked auto-voice, but game will continue.", error);
+            }
+        }
 
+        // ======= PARTICLES =======
         function fireParticles(pitIdx) {
             const pit = document.querySelector(`[data-idx="${pitIdx}"]`); if(!pit) return;
-            const rect = pit.getBoundingClientRect(); 
-            const colors = ['#e5a93c', '#4a90e2', '#00f0ff', '#ff0055'];
+            const rect = pit.getBoundingClientRect(); const colors = ['#e5a93c', '#4a90e2', '#00f0ff', '#ff0055'];
             for(let i=0; i<40; i++) {
                 let p = document.createElement('div'); p.className = 'particle'; 
                 p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -308,9 +330,9 @@
             }
         }
 
-        // ======= GAME STATE & COIN ECONOMY =======
+        // ======= GAME STATE, ECONOMY & DAILY REWARDS =======
         let state = { board: Array(14).fill(5), scores: [0,0], turn: 1, phase: 'IDLE', hand: 0, currIdx: -1 };
-        let stats = { wins: 0, losses: 0, coins: 50, unlockedThemes: ['theme-wood'] }; 
+        let stats = { wins: 0, losses: 0, coins: 50, unlockedThemes: ['theme-wood'], unlockedSeeds: ['tamarind'] }; 
         let stateHistory = []; 
 
         const THEMES = [
@@ -318,11 +340,24 @@
             { id: 'theme-marble', name: 'White Marble', cost: 50 },
             { id: 'theme-cyber', name: 'Neon Cyberpunk', cost: 100 }
         ];
+        const SEEDS = [
+            { id: 'tamarind', name: 'Tamarind Seeds', cost: 0 },
+            { id: 'gold', name: 'Golden Seeds', cost: 80 },
+            { id: 'sapphire', name: 'Sapphire Gems', cost: 150 }
+        ];
 
-        function saveStateForUndo() {
-            stateHistory.push(JSON.parse(JSON.stringify(state)));
-            if(stateHistory.length > 10) stateHistory.shift(); 
+        function checkDailyReward() {
+            let lastLogin = localStorage.getItem('pallankuzhi_last_login');
+            let today = new Date().toDateString();
+            if(lastLogin !== today) {
+                stats.coins += 20;
+                localStorage.setItem('pallankuzhi_last_login', today);
+                alert("🎁 Daily Login Bonus! +20 Rai Coins added to your account.");
+                saveGame(); renderStatsUI();
+            }
         }
+
+        function saveStateForUndo() { stateHistory.push(JSON.parse(JSON.stringify(state))); if(stateHistory.length > 10) stateHistory.shift(); }
 
         function undoMove() {
             if(state.phase === 'ANIMATING') { updateMsg("Wait for move to finish!"); return; }
@@ -332,62 +367,71 @@
         }
 
         function saveGame() {
-            localStorage.setItem('pallankuzhi_state_v4', JSON.stringify(state));
-            localStorage.setItem('pallankuzhi_stats_v4', JSON.stringify(stats));
+            localStorage.setItem('pallankuzhi_state_v5', JSON.stringify(state));
+            localStorage.setItem('pallankuzhi_stats_v5', JSON.stringify(stats));
         }
 
         function loadGame() {
-            let savedState = localStorage.getItem('pallankuzhi_state_v4');
-            let savedStats = localStorage.getItem('pallankuzhi_stats_v4');
+            let savedState = localStorage.getItem('pallankuzhi_state_v5');
+            let savedStats = localStorage.getItem('pallankuzhi_stats_v5');
             if (savedState) state = JSON.parse(savedState);
             if (savedStats) {
                 let parsed = JSON.parse(savedStats);
-                stats.wins = parsed.wins || 0; stats.losses = parsed.losses || 0;
-                stats.coins = parsed.coins !== undefined ? parsed.coins : 50;
+                stats.wins = parsed.wins || 0; stats.losses = parsed.losses || 0; stats.coins = parsed.coins !== undefined ? parsed.coins : 50;
                 stats.unlockedThemes = parsed.unlockedThemes || ['theme-wood'];
+                stats.unlockedSeeds = parsed.unlockedSeeds || ['tamarind'];
             }
             if(state.phase === 'ANIMATING') state.phase = 'IDLE'; 
-            updateThemeDropdownUI();
+            
+            updateShopUI();
             document.body.className = stats.unlockedThemes[stats.unlockedThemes.length - 1]; 
+            document.body.setAttribute('data-seed', stats.unlockedSeeds[stats.unlockedSeeds.length - 1]);
             document.getElementById('theme-selector').value = document.body.className;
+            document.getElementById('seed-selector').value = document.body.getAttribute('data-seed');
+            
             render(); updateMsg(`Player ${state.turn}'s Turn.`);
+            checkDailyReward();
         }
 
-        // ======= THEME SHOP LOGIC =======
-        function updateThemeDropdownUI() {
-            const selector = document.getElementById('theme-selector');
-            selector.innerHTML = ''; 
-            THEMES.forEach(theme => {
-                let isUnlocked = stats.unlockedThemes.includes(theme.id);
-                let opt = document.createElement('option');
-                opt.value = theme.id;
-                opt.innerText = isUnlocked ? `✓ ${theme.name}` : `🔒 ${theme.name} (${theme.cost} 🪙)`;
-                selector.appendChild(opt);
+        // ======= SHOP LOGIC =======
+        function updateShopUI() {
+            const boardSel = document.getElementById('theme-selector'); boardSel.innerHTML = ''; 
+            THEMES.forEach(t => {
+                let opt = document.createElement('option'); opt.value = t.id;
+                opt.innerText = stats.unlockedThemes.includes(t.id) ? `Board: ✓ ${t.name}` : `🔒 Board: ${t.name} (${t.cost} 🪙)`;
+                boardSel.appendChild(opt);
+            });
+            const seedSel = document.getElementById('seed-selector'); seedSel.innerHTML = ''; 
+            SEEDS.forEach(s => {
+                let opt = document.createElement('option'); opt.value = s.id;
+                opt.innerText = stats.unlockedSeeds.includes(s.id) ? `Seed: ✓ ${s.name}` : `🔒 Seed: ${s.name} (${s.cost} 🪙)`;
+                seedSel.appendChild(opt);
             });
         }
 
-        function attemptThemeChange() {
-            const selector = document.getElementById('theme-selector');
-            const selectedID = selector.value;
-            const themeData = THEMES.find(t => t.id === selectedID);
-
-            if (stats.unlockedThemes.includes(selectedID)) {
-                document.body.className = selectedID; 
+        function attemptPurchase(type) {
+            let selector, list, unlockedList, applyFunc;
+            if(type === 'board') {
+                selector = document.getElementById('theme-selector'); list = THEMES; unlockedList = stats.unlockedThemes;
+                applyFunc = (id) => document.body.className = id;
             } else {
-                if (stats.coins >= themeData.cost) {
-                    if(confirm(`Unlock the ${themeData.name} Theme for ${themeData.cost} Rai Coins?`)) {
-                        stats.coins -= themeData.cost;
-                        stats.unlockedThemes.push(selectedID);
-                        document.body.className = selectedID;
-                        writeLog(`Unlocked ${themeData.name}!`);
-                        updateThemeDropdownUI();
-                        selector.value = selectedID;
-                        renderStatsUI();
-                        saveGame();
-                    } else { selector.value = document.body.className; } 
+                selector = document.getElementById('seed-selector'); list = SEEDS; unlockedList = stats.unlockedSeeds;
+                applyFunc = (id) => document.body.setAttribute('data-seed', id);
+            }
+
+            const selectedID = selector.value;
+            const itemData = list.find(i => i.id === selectedID);
+
+            if (unlockedList.includes(selectedID)) { applyFunc(selectedID); } 
+            else {
+                if (stats.coins >= itemData.cost) {
+                    if(confirm(`Unlock ${itemData.name} for ${itemData.cost} Rai Coins?`)) {
+                        stats.coins -= itemData.cost; unlockedList.push(selectedID); applyFunc(selectedID);
+                        writeLog(`Unlocked ${itemData.name}!`); updateShopUI(); selector.value = selectedID; renderStatsUI(); saveGame();
+                        speakVoice("Item Unlocked!");
+                    } else { loadGame(); } 
                 } else {
-                    alert(`Not enough Rai Coins! You need ${themeData.cost} 🪙 but have ${stats.coins} 🪙.`);
-                    selector.value = document.body.className; 
+                    alert(`Not enough Rai Coins! You need ${itemData.cost} 🪙 but have ${stats.coins} 🪙.`); loadGame(); 
                 }
             }
         }
@@ -399,31 +443,18 @@
             else board.classList.remove('face-to-face');
         }
 
-        const msgBox = document.getElementById('msg-box');
-        const actionLog = document.getElementById('action-log');
-
+        const msgBox = document.getElementById('msg-box'); const actionLog = document.getElementById('action-log');
         function updateMsg(text) { msgBox.innerHTML = text; }
-        function writeLog(text) {
-            let logEntry = document.createElement('div'); logEntry.innerText = `> ${text}`; actionLog.prepend(logEntry); 
-        }
-
-        function renderStatsUI() {
-            document.getElementById('stat-wins').innerText = stats.wins; 
-            document.getElementById('stat-loss').innerText = stats.losses;
-            document.getElementById('stat-coins').innerText = stats.coins;
-        }
+        function writeLog(text) { let logEntry = document.createElement('div'); logEntry.innerText = `> ${text}`; actionLog.prepend(logEntry); }
+        function renderStatsUI() { document.getElementById('stat-wins').innerText = stats.wins; document.getElementById('stat-loss').innerText = stats.losses; document.getElementById('stat-coins').innerText = stats.coins; }
 
         function render() {
             document.querySelectorAll('.pit').forEach(p => {
                 const i = parseInt(p.dataset.idx); p.innerHTML = `<span class="pit-count">${state.board[i]}</span>`;
                 for(let s=0; s<state.board[i]; s++) {
                     const div = document.createElement('div'); div.className = 'seed';
-                    // FIX: Direct CSS variables instead of inline transform to allow animation to work properly
-                    div.style.setProperty('--tx', `${Math.random()*16-8}px`);
-                    div.style.setProperty('--ty', `${Math.random()*16-8}px`);
-                    div.style.setProperty('--rot', `${Math.random()*360}deg`);
-                    div.style.animationDelay = `${Math.random() * 0.15}s`; 
-                    p.appendChild(div);
+                    div.style.setProperty('--tx', `${Math.random()*20-10}px`); div.style.setProperty('--ty', `${Math.random()*20-10}px`); div.style.setProperty('--rot', `${Math.random()*360}deg`);
+                    div.style.animationDelay = `${Math.random() * 0.15}s`; p.appendChild(div);
                 }
                 p.classList.remove('target', 'highlight');
                 if (state.phase === 'MANUAL_DROP' && i === (state.currIdx + 1) % 14) p.classList.add('target');
@@ -434,21 +465,18 @@
             if (state.hand > 0) document.getElementById('hand-tracker').classList.add('active'); else document.getElementById('hand-tracker').classList.remove('active');
             document.getElementById('row-p1').className = `row ${state.turn===1 ? 'active-row' : 'inactive'}`;
             document.getElementById('row-p2').className = `row ${state.turn===2 ? 'active-row' : 'inactive'}`;
-            
             renderStatsUI(); saveGame(); 
         }
 
         // ======= GAMEPLAY LOGIC =======
         async function handlePitClick(idx) {
             initAudio(); idx = parseInt(idx);
-
             if (state.phase === 'IDLE') {
                 if (state.turn === 1 && (idx < 0 || idx > 6)) return;
                 if (state.turn === 2 && (idx < 7 || idx > 13)) return;
                 if (state.board[idx] === 0) return;
                 
-                saveStateForUndo(); 
-                writeLog(`P${state.turn} lifted ${state.board[idx]} seeds from pit ${idx}`);
+                saveStateForUndo(); writeLog(`P${state.turn} lifted ${state.board[idx]} seeds.`);
                 startSowingSequence(idx);
             } else if (state.phase === 'MANUAL_DROP') {
                 if (idx === (state.currIdx + 1) % 14) processSingleDrop();
@@ -484,7 +512,7 @@
         async function evaluateEndOfHand() {
             let nextIdx = (state.currIdx + 1) % 14;
             if (state.board[nextIdx] > 0) {
-                updateMsg("Continuing turn..."); writeLog(`P${state.turn} continues from pit ${nextIdx}`);
+                updateMsg("Continuing turn..."); writeLog(`P${state.turn} continues.`);
                 await new Promise(r => setTimeout(r, 600));
                 state.hand = state.board[nextIdx]; state.board[nextIdx] = 0; state.currIdx = nextIdx;
                 render(); await decideNextMove();
@@ -493,8 +521,8 @@
                 if (state.board[captureIdx] > 0) {
                     let captured = state.board[captureIdx]; state.scores[state.turn - 1] += captured; state.board[captureIdx] = 0;
                     playCaptureSound(); fireParticles(captureIdx); render();
-                    writeLog(`P${state.turn} CAPTURED ${captured} seeds!`);
-                    updateMsg(`Capture! Player ${state.turn} takes ${captured} seeds!`);
+                    writeLog(`P${state.turn} CAPTURED ${captured} seeds!`); updateMsg(`Capture! Player ${state.turn} takes ${captured} seeds!`);
+                    speakVoice("Great Capture!");
                     await new Promise(r => setTimeout(r, 1500));
                 } else {
                     updateMsg("Turn Ends."); await new Promise(r => setTimeout(r, 800));
@@ -507,6 +535,7 @@
             if (checkGameOver()) return;
             state.turn = state.turn === 1 ? 2 : 1; state.phase = 'IDLE';
             updateMsg(`Player ${state.turn}'s Turn.`); render();
+            speakVoice(`Player ${state.turn}'s Turn.`);
             if (state.turn === 2 && document.getElementById('ai-on').checked) {
                 updateMsg("AI is thinking..."); setTimeout(triggerAI, 1200);
             }
@@ -518,9 +547,7 @@
                 let choice = opts[0]; let maxYield = -1;
                 opts.forEach(idx => {
                     let seeds = state.board[idx]; let landPit = (idx + seeds) % 14; let capturePit = (landPit + 2) % 14;
-                    if(state.board[(landPit+1)%14] === 0 && state.board[capturePit] > maxYield) {
-                        maxYield = state.board[capturePit]; choice = idx;
-                    }
+                    if(state.board[(landPit+1)%14] === 0 && state.board[capturePit] > maxYield) { maxYield = state.board[capturePit]; choice = idx; }
                 });
                 if(maxYield === -1) choice = opts.reduce((a, b) => state.board[a] > state.board[b] ? a : b);
                 handlePitClick(choice);
@@ -532,15 +559,13 @@
                 state.phase = 'ANIMATING'; 
                 if(state.scores[0] > state.scores[1]) { 
                     stats.wins++; stats.coins += 50; 
-                    msgBox.innerHTML = `Player 1 WINS! (+50 🪙)`; writeLog("Player 1 Won!"); 
+                    msgBox.innerHTML = `Player 1 WINS! (+50 🪙)`; writeLog("Player 1 Won!"); speakVoice("Player 1 wins the game. Congratulations!");
                 }
                 else if(state.scores[1] > state.scores[0]) { 
-                    if(document.getElementById('ai-on').checked) { stats.losses++; msgBox.innerHTML = `AI WINS!`; writeLog("AI Won!"); }
-                    else { msgBox.innerHTML = `Player 2 WINS!`; writeLog("Player 2 Won!"); }
+                    if(document.getElementById('ai-on').checked) { stats.losses++; msgBox.innerHTML = `AI WINS!`; writeLog("AI Won!"); speakVoice("AI wins the game."); }
+                    else { msgBox.innerHTML = `Player 2 WINS!`; writeLog("Player 2 Won!"); speakVoice("Player 2 wins the game. Congratulations!"); }
                 }
-                else { 
-                    stats.coins += 20; msgBox.innerHTML = `Match Tied! (+20 🪙)`; writeLog("Match Tied!"); 
-                }
+                else { stats.coins += 20; msgBox.innerHTML = `Match Tied! (+20 🪙)`; writeLog("Match Tied!"); speakVoice("It is a tie."); }
                 renderStatsUI(); saveGame(); return true;
             }
             return false;
@@ -552,6 +577,7 @@
                 state = { board: Array(14).fill(seedCount), scores: [0, 0], turn: 1, phase: 'IDLE', hand: 0, currIdx: -1 };
                 stateHistory = []; actionLog.innerHTML = ""; writeLog("Game reset.");
                 updateMsg(`New Game: ${seedCount} seeds.`); render();
+                speakVoice("New game started. Player 1's turn.");
             }
         }
 
