@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallankuzhi V4.1 - Animated Seeds</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        /* === ULTRA MODERN THEME VARIABLES === */
+        :root {
+            --bg: #120d0a;
+            --bg-gradient: radial-gradient(circle at top, #2a1c15 0%, #120d0a 100%);
+            --board-bg: linear-gradient(145deg, #42281e, #2b1a13);
+            --board-border: #1a0f0b;
+            --pit-bg: linear-gradient(145deg, #1c100b, #25160f);
+            --pit-shadow: inset 8px 8px 15px #0b0604, inset -8px -8px 15px #352018;
+            --accent: #e5a93c;
+            --accent-glow: rgba(229, 169, 60, 0.4);
+            --text-main: #f5e6d3;
+            --text-muted: #a38c78;
+            --seed-color1: #a86c32;
+            --seed-color2: #4a2810;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --panel-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        body.theme-marble {
+            --bg: #f4f7f6;
+            --bg-gradient: radial-gradient(circle at top, #ffffff 0%, #eef2f3 100%);
+            --board-bg: linear-gradient(145deg, #ffffff, #e6e9e9);
+            --board-border: #d1d9e6;
+            --pit-bg: linear-gradient(145deg, #e6e9e9, #ffffff);
+            --pit-shadow: inset 8px 8px 15px #d1d9e6, inset -8px -8px 15px #ffffff;
+            --accent: #4a90e2;
+            --accent-glow: rgba(74, 144, 226, 0.3);
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --seed-color1: #34495e;
+            --seed-color2: #1abc9c;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 1);
+            --panel-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);
+        }
+
+        body.theme-cyber {
+            --bg: #09090b;
+            --bg-gradient: radial-gradient(circle at top, #18181b 0%, #09090b 100%);
+            --board-bg: #131316;
+            --board-border: #27272a;
+            --pit-bg: #09090b;
+            --pit-shadow: inset 5px 5px 10px #000000, inset -5px -5px 10px #1f1f22;
+            --accent: #00f0ff;
+            --accent-glow: rgba(0, 240, 255, 0.4);
+            --text-main: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --seed-color1: #ff0055;
+            --seed-color2: #7000ff;
+            --glass-bg: rgba(24, 24, 27, 0.8);
+            --glass-border: rgba(39, 39, 42, 1);
+            --panel-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; }
+        
+        body {
+            background: var(--bg-gradient); color: var(--text-main); font-family: 'Inter', sans-serif;
+            display: flex; flex-direction: column; align-items: center; margin: 0; padding: 30px 20px;
+            min-height: 100vh; overflow-x: hidden; transition: background 0.6s ease, color 0.6s ease;
+        }
+
+        .header-container { text-align: center; margin-bottom: 30px; }
+        .header-container h1 { 
+            margin: 0; font-size: 2.8rem; font-weight: 800; letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--text-main), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header-container p { margin: 5px 0 0; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; letter-spacing: 1px;}
+
+        .top-bar {
+            display: flex; justify-content: center; gap: 25px; flex-wrap: wrap;
+            background: var(--glass-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 50px;
+            padding: 12px 30px; margin-bottom: 25px; box-shadow: var(--panel-shadow);
+            font-weight: 600; font-size: 1rem;
+        }
+        .coin-highlight { color: var(--accent); display: flex; align-items: center; gap: 5px; }
+
+        .info-row { display: flex; gap: 20px; width: 100%; max-width: 900px; margin-bottom: 30px; align-items: stretch; }
+
+        .status-box {
+            flex: 2; background: var(--glass-bg); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 20px; display: flex; flex-direction: column; justify-content: center;
+            box-shadow: var(--panel-shadow); position: relative; overflow: hidden;
+        }
+        .status-box::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent); }
+        #msg-box { font-size: 1.2rem; font-weight: 600; text-align: center; }
+
+        .log-box {
+            flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 20px; padding: 15px; height: 100px; overflow-y: auto;
+            font-size: 0.85rem; color: var(--text-muted); box-shadow: var(--panel-shadow); display: flex; flex-direction: column-reverse;
+        }
+        .log-box div { padding: 4px 0; border-bottom: 1px solid var(--glass-border); }
+        .log-box div:first-child { color: var(--text-main); font-weight: 600; border-bottom: none; }
+
+        .board-container {
+            background: var(--board-bg); padding: 50px 40px; border-radius: 100px;
+            border: 4px solid var(--board-border); box-shadow: var(--panel-shadow);
+            display: flex; flex-direction: column; gap: 50px; transition: transform 0.6s ease;
+        }
+
+        .row { display: flex; gap: 25px; transition: opacity 0.4s ease; }
+        .row.inactive { opacity: 0.3; filter: grayscale(50%); } 
+
+        .face-to-face #row-p2 { transform: rotate(180deg); }
+        .face-to-face #row-p2 .pit-count { transform: rotate(180deg); }
+
+        .pit {
+            width: 85px; height: 85px; background: var(--pit-bg); border-radius: 50%;
+            display: flex; flex-wrap: wrap; align-content: center; justify-content: center;
+            position: relative; box-shadow: var(--pit-shadow); cursor: pointer; transition: all 0.3s ease;
+        }
+        .pit:hover { transform: translateY(-3px); box-shadow: var(--pit-shadow), 0 10px 20px rgba(0,0,0,0.2); }
+        .pit.target { box-shadow: var(--pit-shadow), 0 0 0 3px var(--accent); opacity: 1 !important; animation: breathe 2s infinite ease-in-out; z-index: 10; }
+        .pit.highlight { box-shadow: var(--pit-shadow), 0 0 25px var(--accent-glow); }
+        
+        @keyframes breathe { 0%, 100% { box-shadow: var(--pit-shadow), 0 0 5px var(--accent); } 50% { box-shadow: var(--pit-shadow), 0 0 20px var(--accent); transform: scale(1.05); } }
+
+        /* === BUG FIX: PERFECT SEED ANIMATION === */
+        .seed {
+            width: 13px; height: 18px; 
+            background: linear-gradient(135deg, var(--seed-color1), var(--seed-color2));
+            border-radius: 50% 40% 60% 40%; margin: 1.5px; 
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+            /* JS ab direct transform ki jagah variables use karega taki animation override na ho */
+            transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+            animation: growPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes growPop { 
+            0% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0) translateY(-20px); opacity: 0; } 
+            60% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1.4); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(1) translateY(0); opacity: 1; } 
+        }
+
+        .pit-count { 
+            position: absolute; bottom: -35px; font-size: 0.9rem; font-weight: 600; 
+            color: var(--text-muted); background: var(--glass-bg); padding: 4px 12px; 
+            border-radius: 20px; border: 1px solid var(--glass-border);
+        }
+
+        .hand-tracker-wrapper { display: flex; justify-content: center; width: 100%; margin-top: -20px; margin-bottom: 20px;}
+        #hand-tracker {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 12px 30px;
+            border-radius: 50px; font-size: 1.1rem; color: var(--text-muted); font-weight: 600;
+            display: flex; align-items: center; gap: 10px; transition: all 0.3s;
+        }
+        #hand-tracker.active { 
+            background: var(--accent-glow); border-color: var(--accent); color: var(--text-main); 
+            transform: translateY(-5px); box-shadow: 0 10px 20px var(--accent-glow);
+        }
+        #hand-count { font-size: 1.5rem; font-weight: 800; }
+
+        .controls-panel {
+            margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+            background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            padding: 35px; border-radius: 30px; width: 100%; max-width: 900px; box-shadow: var(--panel-shadow);
+        }
+
+        .score-board { display: flex; gap: 20px; justify-content: space-between; }
+        .score-card { flex: 1; text-align: center; background: rgba(0,0,0,0.05); padding: 20px; border-radius: 20px; border: 1px solid var(--glass-border); }
+        .score-card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+        .score-card b { font-size: 2.5rem; color: var(--accent); line-height: 1; }
+
+        .settings-group { display: flex; flex-direction: column; gap: 15px; }
+        .switch-label { display: flex; justify-content: space-between; align-items: center; font-weight: 600; cursor: pointer; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(128,128,128,0.3); transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        .actions-group { display: flex; flex-direction: column; gap: 15px; }
+        select, button {
+            padding: 14px 20px; border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif;
+            font-weight: 600; cursor: pointer; transition: all 0.3s ease; appearance: none; outline: none; border: 1px solid var(--glass-border);
+        }
+        select { background: var(--glass-bg); color: var(--text-main); }
+        select option { background: #1a1a1a; color: #fff; }
+        button { background: var(--glass-bg); color: var(--text-main); }
+        button:hover { background: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        button.primary { background: var(--accent); color: #000; border: none; box-shadow: 0 10px 20px var(--accent-glow); }
+        button.primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px var(--accent-glow); }
+
+        .particle {
+            position: fixed; width: 8px; height: 8px; border-radius: 50%; pointer-events: none;
+            animation: explode 0.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; z-index: 999;
+        }
+        @keyframes explode { 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>PALLANKUZHI</h1>
+        <p>PREMIUM V4.1 | RAI !NFORMATICS</p>
+    </div>
+
+    <div class="top-bar">
+        <span class="coin-highlight">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+            <span id="stat-coins">0</span>
+        </span>
+        <span>🏆 Wins: <span id="stat-wins">0</span></span>
+        <span>💀 Losses: <span id="stat-loss">0</span></span>
+    </div>
+
+    <div class="info-row">
+        <div class="status-box">
+            <div id="msg-box">Initializing Game Engine...</div>
+        </div>
+        <div class="log-box" id="action-log"></div>
+    </div>
+
+    <div class="hand-tracker-wrapper">
+        <div id="hand-tracker">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-4 0v4"></path><path d="M14 10V5a2 2 0 0 0-4 0v5"></path><path d="M10 10.5V4a2 2 0 0 0-4 0v9"></path><path d="M6 14v-2a2 2 0 0 0-4 0v5.5C2 21.5 5.5 22 8.5 22c3.5 0 6.5-2.5 7.5-6l4-5c.5-.5.5-1.5 0-2s-1.5-.5-2 0l-4 4"></path></svg>
+            Holding <b id="hand-count">0</b>
+        </div>
+    </div>
+
+    <div class="board-container" id="board-ui">
+        <div class="row" id="row-p2">
+            <div class="pit" data-idx="13"></div><div class="pit" data-idx="12"></div><div class="pit" data-idx="11"></div><div class="pit" data-idx="10"></div><div class="pit" data-idx="9"></div><div class="pit" data-idx="8"></div><div class="pit" data-idx="7"></div>
+        </div>
+        <div class="row" id="row-p1">
+            <div class="pit" data-idx="0"></div><div class="pit" data-idx="1"></div><div class="pit" data-idx="2"></div><div class="pit" data-idx="3"></div><div class="pit" data-idx="4"></div><div class="pit" data-idx="5"></div><div class="pit" data-idx="6"></div>
+        </div>
+    </div>
+
+    <div class="controls-panel">
+        <div class="score-board">
+            <div class="score-card"><h3>Player 1</h3><b id="s1">0</b></div>
+            <div class="score-card"><h3>Player 2</h3><b id="s2">0</b></div>
+        </div>
+        
+        <div class="settings-group">
+            <label class="switch-label">Auto Movement
+                <label class="switch"><input type="checkbox" id="auto-move" checked><span class="slider"></span></label>
+            </label>
+            <label class="switch-label">AI Opponent
+                <label class="switch"><input type="checkbox" id="ai-on"><span class="slider"></span></label>
+            </label>
+            <label class="switch-label">Sound Effects
+                <label class="switch"><input type="checkbox" id="sound-on" checked><span class="slider"></span></label>
+            </label>
+            <label class="switch-label">Tabletop Mode
+                <label class="switch"><input type="checkbox" id="face-mode" onchange="toggleFaceMode()"><span class="slider"></span></label>
+            </label>
+        </div>
+        
+        <div class="actions-group">
+            <select id="theme-selector" onchange="attemptThemeChange()"></select>
+            <select id="start-seeds" onchange="confirmReset()">
+                <option value="5">Rule: 5 Seeds per Pit</option>
+                <option value="6">Rule: 6 Seeds per Pit</option>
+                <option value="12">Rule: 12 Seeds per Pit</option>
+            </select>
+            <button onclick="undoMove()">↩️ Undo Last Move</button>
+            <button onclick="confirmReset()" class="primary">Start New Game</button>
+        </div>
+    </div>
+
+    <script>
+        // ======= AUDIO ENGINE =======
+        let audioCtx;
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+        function playDropSound() {
+            if (!document.getElementById('sound-on').checked) return; initAudio();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = 'triangle'; osc.frequency.setValueAtTime(450, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.8, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
+        function playCaptureSound() {
+            if (!document.getElementById('sound-on').checked) return; initAudio();
+            [523.25, 659.25, 783.99].forEach(freq => { 
+                const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+                osc.type = 'sine'; osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+                osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.6);
+            });
+        }
+
+        function fireParticles(pitIdx) {
+            const pit = document.querySelector(`[data-idx="${pitIdx}"]`); if(!pit) return;
+            const rect = pit.getBoundingClientRect(); 
+            const colors = ['#e5a93c', '#4a90e2', '#00f0ff', '#ff0055'];
+            for(let i=0; i<40; i++) {
+                let p = document.createElement('div'); p.className = 'particle'; 
+                p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = (rect.left + rect.width/2) + 'px'; p.style.top = (rect.top + rect.height/2) + 'px';
+                p.style.setProperty('--tx', (Math.random() * 400 - 200) + 'px'); p.style.setProperty('--ty', (Math.random() * 400 - 200) + 'px');
+                document.body.appendChild(p); setTimeout(() => p.remove(), 800);
+            }
+        }
+
+        // ======= GAME STATE & COIN ECONOMY =======
+        let state = { board: Array(14).fill(5), scores: [0,0], turn: 1, phase: 'IDLE', hand: 0, currIdx: -1 };
+        let stats = { wins: 0, losses: 0, coins: 50, unlockedThemes: ['theme-wood'] }; 
+        let stateHistory = []; 
+
+        const THEMES = [
+            { id: 'theme-wood', name: 'Premium Walnut', cost: 0 },
+            { id: 'theme-marble', name: 'White Marble', cost: 50 },
+            { id: 'theme-cyber', name: 'Neon Cyberpunk', cost: 100 }
+        ];
+
+        function saveStateForUndo() {
+            stateHistory.push(JSON.parse(JSON.stringify(state)));
+            if(stateHistory.length > 10) stateHistory.shift(); 
+        }
+
+        function undoMove() {
+            if(state.phase === 'ANIMATING') { updateMsg("Wait for move to finish!"); return; }
+            if(stateHistory.length > 0) {
+                state = stateHistory.pop(); writeLog("Move Undone."); updateMsg(`Player ${state.turn}'s Turn.`); render();
+            } else { updateMsg("No more moves to undo!"); }
+        }
+
+        function saveGame() {
+            localStorage.setItem('pallankuzhi_state_v4', JSON.stringify(state));
+            localStorage.setItem('pallankuzhi_stats_v4', JSON.stringify(stats));
+        }
+
+        function loadGame() {
+            let savedState = localStorage.getItem('pallankuzhi_state_v4');
+            let savedStats = localStorage.getItem('pallankuzhi_stats_v4');
+            if (savedState) state = JSON.parse(savedState);
+            if (savedStats) {
+                let parsed = JSON.parse(savedStats);
+                stats.wins = parsed.wins || 0; stats.losses = parsed.losses || 0;
+                stats.coins = parsed.coins !== undefined ? parsed.coins : 50;
+                stats.unlockedThemes = parsed.unlockedThemes || ['theme-wood'];
+            }
+            if(state.phase === 'ANIMATING') state.phase = 'IDLE'; 
+            updateThemeDropdownUI();
+            document.body.className = stats.unlockedThemes[stats.unlockedThemes.length - 1]; 
+            document.getElementById('theme-selector').value = document.body.className;
+            render(); updateMsg(`Player ${state.turn}'s Turn.`);
+        }
+
+        // ======= THEME SHOP LOGIC =======
+        function updateThemeDropdownUI() {
+            const selector = document.getElementById('theme-selector');
+            selector.innerHTML = ''; 
+            THEMES.forEach(theme => {
+                let isUnlocked = stats.unlockedThemes.includes(theme.id);
+                let opt = document.createElement('option');
+                opt.value = theme.id;
+                opt.innerText = isUnlocked ? `✓ ${theme.name}` : `🔒 ${theme.name} (${theme.cost} 🪙)`;
+                selector.appendChild(opt);
+            });
+        }
+
+        function attemptThemeChange() {
+            const selector = document.getElementById('theme-selector');
+            const selectedID = selector.value;
+            const themeData = THEMES.find(t => t.id === selectedID);
+
+            if (stats.unlockedThemes.includes(selectedID)) {
+                document.body.className = selectedID; 
+            } else {
+                if (stats.coins >= themeData.cost) {
+                    if(confirm(`Unlock the ${themeData.name} Theme for ${themeData.cost} Rai Coins?`)) {
+                        stats.coins -= themeData.cost;
+                        stats.unlockedThemes.push(selectedID);
+                        document.body.className = selectedID;
+                        writeLog(`Unlocked ${themeData.name}!`);
+                        updateThemeDropdownUI();
+                        selector.value = selectedID;
+                        renderStatsUI();
+                        saveGame();
+                    } else { selector.value = document.body.className; } 
+                } else {
+                    alert(`Not enough Rai Coins! You need ${themeData.cost} 🪙 but have ${stats.coins} 🪙.`);
+                    selector.value = document.body.className; 
+                }
+            }
+        }
+
+        // ======= UI CONTROLS & LOGS =======
+        function toggleFaceMode() {
+            const board = document.getElementById('board-ui');
+            if(document.getElementById('face-mode').checked) board.classList.add('face-to-face');
+            else board.classList.remove('face-to-face');
+        }
+
+        const msgBox = document.getElementById('msg-box');
+        const actionLog = document.getElementById('action-log');
+
+        function updateMsg(text) { msgBox.innerHTML = text; }
+        function writeLog(text) {
+            let logEntry = document.createElement('div'); logEntry.innerText = `> ${text}`; actionLog.prepend(logEntry); 
+        }
+
+        function renderStatsUI() {
+            document.getElementById('stat-wins').innerText = stats.wins; 
+            document.getElementById('stat-loss').innerText = stats.losses;
+            document.getElementById('stat-coins').innerText = stats.coins;
+        }
+
+        function render() {
+            document.querySelectorAll('.pit').forEach(p => {
+                const i = parseInt(p.dataset.idx); p.innerHTML = `<span class="pit-count">${state.board[i]}</span>`;
+                for(let s=0; s<state.board[i]; s++) {
+                    const div = document.createElement('div'); div.className = 'seed';
+                    // FIX: Direct CSS variables instead of inline transform to allow animation to work properly
+                    div.style.setProperty('--tx', `${Math.random()*16-8}px`);
+                    div.style.setProperty('--ty', `${Math.random()*16-8}px`);
+                    div.style.setProperty('--rot', `${Math.random()*360}deg`);
+                    div.style.animationDelay = `${Math.random() * 0.15}s`; 
+                    p.appendChild(div);
+                }
+                p.classList.remove('target', 'highlight');
+                if (state.phase === 'MANUAL_DROP' && i === (state.currIdx + 1) % 14) p.classList.add('target');
+            });
+
+            document.getElementById('s1').innerText = state.scores[0]; document.getElementById('s2').innerText = state.scores[1];
+            document.getElementById('hand-count').innerText = state.hand;
+            if (state.hand > 0) document.getElementById('hand-tracker').classList.add('active'); else document.getElementById('hand-tracker').classList.remove('active');
+            document.getElementById('row-p1').className = `row ${state.turn===1 ? 'active-row' : 'inactive'}`;
+            document.getElementById('row-p2').className = `row ${state.turn===2 ? 'active-row' : 'inactive'}`;
+            
+            renderStatsUI(); saveGame(); 
+        }
+
+        // ======= GAMEPLAY LOGIC =======
+        async function handlePitClick(idx) {
+            initAudio(); idx = parseInt(idx);
+
+            if (state.phase === 'IDLE') {
+                if (state.turn === 1 && (idx < 0 || idx > 6)) return;
+                if (state.turn === 2 && (idx < 7 || idx > 13)) return;
+                if (state.board[idx] === 0) return;
+                
+                saveStateForUndo(); 
+                writeLog(`P${state.turn} lifted ${state.board[idx]} seeds from pit ${idx}`);
+                startSowingSequence(idx);
+            } else if (state.phase === 'MANUAL_DROP') {
+                if (idx === (state.currIdx + 1) % 14) processSingleDrop();
+                else updateMsg(`Please click the highlighted dashed pit.`);
+            }
+        }
+
+        async function startSowingSequence(startIdx) {
+            state.phase = 'ANIMATING'; state.hand = state.board[startIdx]; state.board[startIdx] = 0; state.currIdx = startIdx;
+            render(); updateMsg(`Sowing seeds...`); await decideNextMove();
+        }
+
+        async function decideNextMove() {
+            let isAuto = document.getElementById('auto-move').checked || (state.turn === 2 && document.getElementById('ai-on').checked);
+            if (isAuto) await executeAutoLoop(); else { state.phase = 'MANUAL_DROP'; updateMsg(`Manual Drop: Click target pit.`); render(); }
+        }
+
+        async function processSingleDrop() {
+            state.phase = 'ANIMATING'; state.currIdx = (state.currIdx + 1) % 14; state.board[state.currIdx]++; state.hand--;
+            playDropSound(); render();
+            if (state.hand > 0) await decideNextMove(); else await evaluateEndOfHand();
+        }
+
+        async function executeAutoLoop() {
+            while (state.hand > 0) {
+                state.currIdx = (state.currIdx + 1) % 14; state.board[state.currIdx]++; state.hand--;
+                playDropSound(); render(); document.querySelector(`[data-idx="${state.currIdx}"]`).classList.add('highlight');
+                await new Promise(r => setTimeout(r, 300)); 
+            }
+            await evaluateEndOfHand();
+        }
+
+        async function evaluateEndOfHand() {
+            let nextIdx = (state.currIdx + 1) % 14;
+            if (state.board[nextIdx] > 0) {
+                updateMsg("Continuing turn..."); writeLog(`P${state.turn} continues from pit ${nextIdx}`);
+                await new Promise(r => setTimeout(r, 600));
+                state.hand = state.board[nextIdx]; state.board[nextIdx] = 0; state.currIdx = nextIdx;
+                render(); await decideNextMove();
+            } else {
+                let captureIdx = (nextIdx + 1) % 14;
+                if (state.board[captureIdx] > 0) {
+                    let captured = state.board[captureIdx]; state.scores[state.turn - 1] += captured; state.board[captureIdx] = 0;
+                    playCaptureSound(); fireParticles(captureIdx); render();
+                    writeLog(`P${state.turn} CAPTURED ${captured} seeds!`);
+                    updateMsg(`Capture! Player ${state.turn} takes ${captured} seeds!`);
+                    await new Promise(r => setTimeout(r, 1500));
+                } else {
+                    updateMsg("Turn Ends."); await new Promise(r => setTimeout(r, 800));
+                }
+                finalizeTurn();
+            }
+        }
+
+        function finalizeTurn() {
+            if (checkGameOver()) return;
+            state.turn = state.turn === 1 ? 2 : 1; state.phase = 'IDLE';
+            updateMsg(`Player ${state.turn}'s Turn.`); render();
+            if (state.turn === 2 && document.getElementById('ai-on').checked) {
+                updateMsg("AI is thinking..."); setTimeout(triggerAI, 1200);
+            }
+        }
+
+        function triggerAI() {
+            let opts = []; for (let i = 7; i <= 13; i++) if (state.board[i] > 0) opts.push(i);
+            if (opts.length > 0) {
+                let choice = opts[0]; let maxYield = -1;
+                opts.forEach(idx => {
+                    let seeds = state.board[idx]; let landPit = (idx + seeds) % 14; let capturePit = (landPit + 2) % 14;
+                    if(state.board[(landPit+1)%14] === 0 && state.board[capturePit] > maxYield) {
+                        maxYield = state.board[capturePit]; choice = idx;
+                    }
+                });
+                if(maxYield === -1) choice = opts.reduce((a, b) => state.board[a] > state.board[b] ? a : b);
+                handlePitClick(choice);
+            }
+        }
+
+        function checkGameOver() {
+            if (state.board.slice(0, 7).every(s => s === 0) || state.board.slice(7, 14).every(s => s === 0)) {
+                state.phase = 'ANIMATING'; 
+                if(state.scores[0] > state.scores[1]) { 
+                    stats.wins++; stats.coins += 50; 
+                    msgBox.innerHTML = `Player 1 WINS! (+50 🪙)`; writeLog("Player 1 Won!"); 
+                }
+                else if(state.scores[1] > state.scores[0]) { 
+                    if(document.getElementById('ai-on').checked) { stats.losses++; msgBox.innerHTML = `AI WINS!`; writeLog("AI Won!"); }
+                    else { msgBox.innerHTML = `Player 2 WINS!`; writeLog("Player 2 Won!"); }
+                }
+                else { 
+                    stats.coins += 20; msgBox.innerHTML = `Match Tied! (+20 🪙)`; writeLog("Match Tied!"); 
+                }
+                renderStatsUI(); saveGame(); return true;
+            }
+            return false;
+        }
+
+        function confirmReset() {
+            if(confirm("Start a new game?")) {
+                let seedCount = parseInt(document.getElementById('start-seeds').value);
+                state = { board: Array(14).fill(seedCount), scores: [0, 0], turn: 1, phase: 'IDLE', hand: 0, currIdx: -1 };
+                stateHistory = []; actionLog.innerHTML = ""; writeLog("Game reset.");
+                updateMsg(`New Game: ${seedCount} seeds.`); render();
+            }
+        }
+
+        document.querySelectorAll('.pit').forEach(p => p.addEventListener('click', () => handlePitClick(p.dataset.idx)));
+        loadGame();
+    </script>
+</body>
+</html>
